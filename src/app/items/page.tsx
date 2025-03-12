@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 const fetchItems = async () => {
   // 24시간마다 정보 갱신 옵션
-  const response = await fetch(ITEM_DATA_URL, { next: { revalidate: 86400 } });
+  const response = await fetch(ITEM_DATA_URL);
   const jsonData = await response.json();
   return Object.values(jsonData.data) as Item[];
 };
