@@ -3,7 +3,7 @@ import { CHAMPION_DATA_URL } from '../api/riot.api';
 import Image from 'next/image';
 
 const fetchChampions = async () => {
-  const response = await fetch(CHAMPION_DATA_URL);
+  const response = await fetch(CHAMPION_DATA_URL, { next: { revalidate: 86400 } });
   const jsonData = await response.json();
   return Object.values(jsonData.data) as Champion[];
 };
