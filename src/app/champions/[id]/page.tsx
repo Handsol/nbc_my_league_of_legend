@@ -1,31 +1,70 @@
 import { CHAMPION_DETAIL_URL } from '@/app/api/riot.api';
-import { Champion } from '@/types/Champion';
+import { ChampionDetail } from '@/types/ChampionDetail';
 import Image from 'next/image';
 
 interface ChampionDetailPageProps {
   params: { id: string };
 }
 
-const fetchCampionById = async (id: string) => {
+const fetchCampionDetail = async (id: string): Promise<ChampionDetail> => {
   const response = await fetch(CHAMPION_DETAIL_URL(id), { cache: 'no-store' });
   const jsonData = await response.json();
-  return jsonData.data[id] as Champion;
+  return jsonData.data[id] as ChampionDetail;
 };
 
 const championDetailPage = async ({ params }: ChampionDetailPageProps) => {
-  const champion = await fetchCampionById(params.id);
+  const champion = await fetchCampionDetail(params.id);
 
   return (
-    <div className="flex flex-col items-center gap-5 mt-10">
-      <h1 className="text-4xl font-bold">{champion.name}</h1>
-      <p className="text-lg italic">{champion.title}</p>
+    <div>
       <Image
-        src={`https://ddragon.leagueoflegends.com/cdn/15.5.1/img/champion/${champion.image.full}`}
+        src={`https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg`}
         alt={champion.name}
-        width={200}
-        height={200}
+        width={800}
+        height={400}
       />
-      <p className="max-w-2xl text-center">{champion.blurb}</p>
+
+      <h1>{champion.name}</h1>
+      <p>{champion.title}</p>
+      <p>{champion.blurb}</p>
+
+      {/* 패시브 스킬 */}
+      <div>
+        <h2>패시브</h2>
+        <div>
+          <Image
+            src={`https://ddragon.leagueoflegends.com/cdn/15.5.1/img/passive/${champion.passive.image.full}`}
+            alt={champion.passive.name}
+            width={64}
+            height={64}
+          />
+          <div>
+            <h3>{champion.passive.name}</h3>
+            <p>{champion.passive.description}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 액티브 스킬 */}
+      <div>
+        <h2>스킬</h2>
+        <div>
+          {champion.spells.map((spell) => (
+            <div key={spell.id}>
+              <Image
+                src={`https://ddragon.leagueoflegends.com/cdn/15.5.1/img/spell/${spell.image.full}`}
+                alt={spell.name}
+                width={64}
+                height={64}
+              />
+              <div>
+                <h3>{spell.name}</h3>
+                <p>{spell.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
