@@ -7,14 +7,14 @@ interface ChampionDetailPageProps {
   params: { id: string };
 }
 
-const fetchCampionDetail = async (id: string): Promise<ChampionDetail> => {
+const fetchChampionDetail = async (id: string): Promise<ChampionDetail> => {
   const response = await fetch(CHAMPION_DETAIL_URL(id), { cache: 'no-store' });
   const jsonData = await response.json();
   return jsonData.data[id] as ChampionDetail;
 };
 
 const championDetailPage = async ({ params }: ChampionDetailPageProps) => {
-  const champion = await fetchCampionDetail(params.id);
+  const champion = await fetchChampionDetail(params.id);
 
   return (
     <div className="flex flex-col gap-5">
