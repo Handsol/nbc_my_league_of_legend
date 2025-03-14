@@ -4,10 +4,10 @@ import Link from 'next/link';
 const Header = () => {
   return (
     <div>
-      <div className="flex flex-col justify-center items-center gap-3">
+      <div className="flex flex-col justify-center items-center gap-5">
         <div>
           <Link href={'/'} className="flex justify-center cursor-pointer w-auto min-w-[400px] border-b-2">
-            <Image src={'/page-logo.webp'} alt="Page Logo" width={150} height={20} />
+            <Image src={'/page-logo.webp'} alt="Page Logo" width={120} height={20} />
           </Link>
         </div>
         <nav className="flex gap-10 text-xl font-bold">
