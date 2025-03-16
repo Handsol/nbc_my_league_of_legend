@@ -21,13 +21,11 @@ const rotationPage = () => {
     // 로테이션 챔피언 정보 가져오기
     const fetchRotationChampions = async () => {
       const response = await axios.get('/api/rotation');
-      console.log('로테이션 데이터 : ', response.data);
       setRotation(response.data.freeChampionIds);
       setNewPlayerRotation(response.data.freeChampionIdsForNewPlayers);
 
       // 모든 챔피언 정보 가져오기
       const fetchChampions = await axios.get(CHAMPION_DATA_URL);
-      console.log('챔피언 데이터 : ', fetchChampions.data.data);
       setChampions(fetchChampions.data.data);
     };
 
