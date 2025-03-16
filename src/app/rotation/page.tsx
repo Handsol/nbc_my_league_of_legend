@@ -8,22 +8,22 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const rotationPage = () => {
+  // 일반 로테이션 챔피언
   const [rotation, setRotation] = useState<number[]>([]);
+
+  // 챔피언 정보
   const [champions, setChampions] = useState<{ [key: string]: Champion }>({});
 
   useEffect(() => {
-    // 로테이션 정보 가져오기
+    // 로테이션 챔피언 정보 가져오기
     const fetchRotationChampions = async () => {
       const response = await axios.get('/api/rotation');
+      console.log('로테이션 데이터 : ', response.data);
       setRotation(response.data.freeChampionIds);
 
-      console.log('로테이션 챔피언 데이터 : ', response.data);
-
-      // ID에 해당하는 챔피언 정보 가져오기
+      // 모든 챔피언 정보 가져오기
       const fetchChampions = await axios.get(CHAMPION_DATA_URL);
-
       console.log('챔피언 데이터 : ', fetchChampions.data.data);
-
       setChampions(fetchChampions.data.data);
     };
 
@@ -31,31 +31,32 @@ const rotationPage = () => {
   }, []);
 
   return (
-    <div>
-      <h1>이번 주 로테이션 챔피언</h1>
+    <div className="flex flex-col gap-10 mt-5">
+      <h1 className="flex justify-center text-5xl font-bold">로테이션 챔피언</h1>
 
-      <div className="grid grid-cols-4 gap-4">
-        {rotation.map((id) => {
-          // 챔피언 ID를 숫자에서 문자열로 변환 후 해당 데이터 찾기
-          const champion = Object.values(champions).find((c) => c.id === String(id));
+      <div>
+        <h2 className="text-2xl font-bold text-center">이번 주 로테이션 챔피언</h2>
+        <div className="grid grid-cols-4 gap-4 mt-5">
+          {rotation.map((id) => {
+            const champion = Object.values(champions).find((c) => Number(c.key) === id);
+            if (!champion) return null;
 
-          if (!champion) return null;
-
-          return (
-            <Link key={champion.id} href={`/champions/${champion.id}`}>
-              <div className="flex flex-col justify-center items-center w-[250px] h-[200px] border-1 gap-3">
-                <Image
-                  src={`https://ddragon.leagueoflegends.com/cdn/15.5.1/img/champion/${champion.image.full}`}
-                  alt={champion.name}
-                  width={80}
-                  height={80}
-                />
-                <p className="font-bold">{champion.name}</p>
-                <p className="text-gray-500">{champion.title}</p>
-              </div>
-            </Link>
-          );
-        })}
+            return (
+              <Link key={champion.id} href={`/champions/${champion.id}`}>
+                <div className="flex flex-col justify-center items-center w-[250px] h-[200px] border-2 border-gray-300 rounded-lg shadow-md hover:shadow-lg transition">
+                  <Image
+                    src={`https://ddragon.leagueoflegends.com/cdn/15.5.1/img/champion/${champion.image.full}`}
+                    alt={champion.name}
+                    width={80}
+                    height={80}
+                  />
+                  <p className="font-bold">{champion.name}</p>
+                  <p className="text-gray-500">{champion.title}</p>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
