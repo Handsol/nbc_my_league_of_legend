@@ -1,5 +1,5 @@
 import { Item } from '@/types/Item';
-import { ITEM_DATA_URL } from '../api/riot.api';
+import { ITEM_DATA_URL } from '../../utils/riot.api';
 import Image from 'next/image';
 
 const fetchItems = async () => {
