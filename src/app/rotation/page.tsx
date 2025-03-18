@@ -1,35 +1,30 @@
 'use client';
 
-import { Champion } from '@/types/Champion';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { CHAMPION_DATA_URL } from '../api/riot.api';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Champion } from '@/types/Champion';
 
 const rotationPage = () => {
-  // 일반 로테이션 챔피언
   const [rotation, setRotation] = useState<number[]>([]);
-
-  // 신규 소환사 대상 무료 챔피언
   const [newPlayerRotation, setNewPlayerRotation] = useState<number[]>([]);
-
-  // 챔피언 정보
   const [champions, setChampions] = useState<{ [key: string]: Champion }>({});
 
   useEffect(() => {
-    // 로테이션 챔피언 정보 가져오기
-    const fetchRotationChampions = async () => {
-      const response = await axios.get('/api/rotation');
-      setRotation(response.data.freeChampionIds);
-      setNewPlayerRotation(response.data.freeChampionIdsForNewPlayers);
+    const fetchRotationData = async () => {
+      try {
+        const response = await fetch('/api/rotation');
+        const data = await response.json();
 
-      // 모든 챔피언 정보 가져오기
-      const fetchChampions = await axios.get(CHAMPION_DATA_URL);
-      setChampions(fetchChampions.data.data);
+        setRotation(data.rotationData?.freeChampionIds || []);
+        setNewPlayerRotation(data.rotationData?.freeChampionIdsForNewPlayers || []);
+        setChampions(data.championData || {});
+      } catch (error) {
+        console.error('로테이션 데이터 불러오기 실패 : ', error);
+      }
     };
 
-    fetchRotationChampions();
+    fetchRotationData();
   }, []);
 
   return (
