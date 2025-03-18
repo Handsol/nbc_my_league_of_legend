@@ -5,6 +5,10 @@ import Link from 'next/link';
 const championDetailPage = async ({ params }: ChampionDetailPageProps) => {
   const champion = await fetchChampionDetail(params.id);
 
+  if (!champion) {
+    return <div className="text-center text-red-500">챔피언을 찾을 수 없습니다.</div>;
+  }
+
   return (
     <div className="flex flex-col gap-5">
       {/* 챔피언 목록으로 돌아가기 버튼 */}
