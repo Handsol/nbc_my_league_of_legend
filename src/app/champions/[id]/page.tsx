@@ -1,4 +1,4 @@
-import { CHAMPION_DETAIL_URL } from '@/app/api/riot.api';
+import { CHAMPION_DETAIL_URL } from '@/utils/riot.api';
 import { ChampionDetail } from '@/types/ChampionDetail';
 import Image from 'next/image';
 import Link from 'next/link';

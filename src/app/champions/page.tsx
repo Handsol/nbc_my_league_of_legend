@@ -1,5 +1,5 @@
 import { Champion } from '@/types/Champion';
-import { CHAMPION_DATA_URL } from '../api/riot.api';
+import { CHAMPION_DATA_URL } from '../../utils/riot.api';
 import Image from 'next/image';
 import Link from 'next/link';
 
