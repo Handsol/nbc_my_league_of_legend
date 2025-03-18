@@ -1,13 +1,5 @@
-import { Item } from '@/types/Item';
-import { ITEM_DATA_URL } from '../../utils/riot.api';
+import { fetchItems } from '@/utils/serverApi';
 import Image from 'next/image';
-
-const fetchItems = async () => {
-  // 24시간마다 정보 갱신 옵션
-  const response = await fetch(ITEM_DATA_URL);
-  const jsonData = await response.json();
-  return Object.values(jsonData.data) as Item[];
-};
 
 const ItemListPage = async () => {
   const items = await fetchItems();
