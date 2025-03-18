@@ -1,17 +1,6 @@
-import { CHAMPION_DETAIL_URL } from '@/utils/riot.api';
-import { ChampionDetail } from '@/types/ChampionDetail';
+import { ChampionDetailPageProps, fetchChampionDetail } from '@/utils/serverApi';
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface ChampionDetailPageProps {
-  params: { id: string };
-}
-
-const fetchChampionDetail = async (id: string): Promise<ChampionDetail> => {
-  const response = await fetch(CHAMPION_DETAIL_URL(id), { cache: 'no-store' });
-  const jsonData = await response.json();
-  return jsonData.data[id] as ChampionDetail;
-};
 
 const championDetailPage = async ({ params }: ChampionDetailPageProps) => {
   const champion = await fetchChampionDetail(params.id);
