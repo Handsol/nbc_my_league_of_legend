@@ -1,31 +1,29 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useQuery } from '@tanstack/react-query';
 import { Champion } from '@/types/Champion';
 
-const rotationPage = () => {
-  const [rotation, setRotation] = useState<number[]>([]);
-  const [newPlayerRotation, setNewPlayerRotation] = useState<number[]>([]);
-  const [champions, setChampions] = useState<{ [key: string]: Champion }>({});
+// 로테이션 데이터 불러오는 로직
+const fetchRotationData = async () => {
+  const response = await fetch('/api/rotation');
+  if (!response.ok) throw new Error('로테이션 데이터를 불러오기 실패함');
+  return response.json();
+};
 
-  useEffect(() => {
-    const fetchRotationData = async () => {
-      try {
-        const response = await fetch('/api/rotation');
-        const data = await response.json();
+const RotationPage = () => {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['rotationData'],
+    queryFn: fetchRotationData
+  });
 
-        setRotation(data.rotationData?.freeChampionIds || []);
-        setNewPlayerRotation(data.rotationData?.freeChampionIdsForNewPlayers || []);
-        setChampions(data.championData || {});
-      } catch (error) {
-        console.error('로테이션 데이터 불러오기 실패 : ', error);
-      }
-    };
+  if (isLoading) return <div className="text-center text-2xl font-bold mt-10">로딩 중...</div>;
+  if (error) return <div className="text-center text-red-500 font-bold mt-10">에러 발생: {error.message}</div>;
 
-    fetchRotationData();
-  }, []);
+  const rotation: Number[] = data.rotationData?.freeChampionIds || [];
+  const newPlayerRotation: Number[] = data.rotationData?.freeChampionIdsForNewPlayers || [];
+  const champions: Champion[] = data.championData || {};
 
   return (
     <div className="flex flex-col gap-10 mt-5">
@@ -86,4 +84,4 @@ const rotationPage = () => {
   );
 };
 
-export default rotationPage;
+export default RotationPage;
