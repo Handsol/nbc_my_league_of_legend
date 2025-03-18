@@ -1,13 +1,6 @@
-import { Champion } from '@/types/Champion';
-import { CHAMPION_DATA_URL } from '../../utils/riot.api';
 import Image from 'next/image';
 import Link from 'next/link';
-
-const fetchChampions = async () => {
-  const response = await fetch(CHAMPION_DATA_URL, { next: { revalidate: 86400 } });
-  const jsonData = await response.json();
-  return Object.values(jsonData.data) as Champion[];
-};
+import { fetchChampions } from '@/utils/serverApi';
 
 const championsListPage = async () => {
   const champions = await fetchChampions();
