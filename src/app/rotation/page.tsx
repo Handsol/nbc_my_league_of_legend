@@ -21,8 +21,8 @@ const RotationPage = () => {
   if (isLoading) return <div className="text-center text-2xl font-bold mt-10">로딩 중...</div>;
   if (error) return <div className="text-center text-red-500 font-bold mt-10">에러 발생: {error.message}</div>;
 
-  const rotation: Number[] = data.rotationData?.freeChampionIds || [];
-  const newPlayerRotation: Number[] = data.rotationData?.freeChampionIdsForNewPlayers || [];
+  const rotation: number[] = data.rotationData?.freeChampionIds || [];
+  const newPlayerRotation: number[] = data.rotationData?.freeChampionIdsForNewPlayers || [];
   const champions: Champion[] = data.championData || {};
 
   return (
