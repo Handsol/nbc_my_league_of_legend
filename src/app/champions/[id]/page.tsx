@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 
 const championDetailPage = async ({ params }: ChampionDetailPageProps) => {
-  const champion = await fetchChampionDetail(params.id);
+  const { id } = await params;
+  const champion = await fetchChampionDetail(id);
 
   if (!champion) {
     return <div className="text-center text-red-500">챔피언을 찾을 수 없습니다.</div>;
