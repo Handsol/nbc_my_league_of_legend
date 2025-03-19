@@ -21,7 +21,7 @@ export const fetchChampions = async () => {
 
 // 챔피언 상세 정보 params 선언
 export interface ChampionDetailPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 // 챔피언 상세 정보 불러오기
