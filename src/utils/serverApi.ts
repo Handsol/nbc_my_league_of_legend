@@ -5,6 +5,7 @@ import { ChampionDetail } from '@/types/ChampionDetail';
 
 // 아이템 정보 불러오기
 export const fetchItems = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   // 24시간마다 정보 갱신 옵션
   const response = await fetch(ITEM_DATA_URL);
   const jsonData = await response.json();
